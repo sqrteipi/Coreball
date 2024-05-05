@@ -34,20 +34,22 @@ while running:
     if keys[pygame.K_SPACE]:
         if not pressed:
             pressed = True
-            snipes.append(core_ang)
+            snipes.append(180.0)
     else:
         pressed = False
 
-    for angle in snipes:
-        x = sin(((core_ang+angle)%360)*pi/180)*line_len
-        y = cos(((core_ang+angle)%360)*pi/180)*line_len
+    for i in range(len(snipes)):
+        angle = snipes[i]
+        x = sin(angle*pi/180)*line_len
+        y = cos(angle*pi/180)*line_len
         pygame.draw.line(screen, WHITE, [500, 500], [500+x, 500+y], width=5)
         pygame.draw.circle(screen, WHITE, [500+x, 500+y], radius=30)
-
+        snipes[i] += core_speed
+        snipes[i] %= 360
+    
     pygame.draw.circle(screen, WHITE, [500, 500], core_radii)
-    print(snipes)
+
     pygame.display.flip()
     clock.tick(60)  
-    # print(snipes)
 
 pygame.quit()
