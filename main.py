@@ -26,8 +26,8 @@ def main():
     pressed = False
 
     REVERSED = True
-    SPEED_UP = True
-    SPEED_ADD = True
+    SPEED_UP = False
+    SPEED_ADD = False
 
     round = 0
 
