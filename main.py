@@ -9,7 +9,7 @@ display_info = pygame.display.Info()
 # pygame setup
 SCREEN_WIDTH = display_info.current_w
 SCREEN_HEIGHT = display_info.current_h
-SCREEN_MIDDLE = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4]
+SCREEN_MIDDLE = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2]
 
 
 def main():
@@ -17,11 +17,13 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
-    running = True
-
+    
+    
+    ### Settings
     WHITE = (255, 255, 255)
     font = pygame.font.Font(None, 80)
 
+    ### Parameters
     core_ang = 0.0
     core_speed = 2
     core_radii = 50
@@ -30,13 +32,18 @@ def main():
     snipes = []
     pressed = False
 
+    ### Variations
     RANDOM_REVERSE = True
     REVERSED = True
     SPEED_UP = True
     SPEED_ADD = True
 
+    ### Info
     round = 0
     username = ""
+
+    ### Typing Player Username
+    running = True
 
     while running:
         screen.fill("black")
@@ -44,25 +51,29 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE: ### Press Esc -> Quit
                     pygame.quit()
                     sys.exit()
-                elif event.key == pygame.K_RETURN:
+                elif event.key == pygame.K_RETURN: ### Press Return -> Finish typing
                     running = False
-                elif event.key == pygame.K_BACKSPACE:
+                elif event.key == pygame.K_BACKSPACE: ### Delete char
                     username = username[:-1]
                 else:
-                    username += event.unicode
+                    username += event.unicode ### Add char
 
+        ### Show Current Name
         name_surface = font.render(username, True, WHITE)
-        text_surface = font.render("Please Type Your Name: ", True, WHITE)
         name_rect = name_surface.get_rect()
-        text_rect = text_surface.get_rect()
         name_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-        text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80)
-        screen.blit(name_surface, name_rect)
         screen.blit(text_surface, text_rect)
 
+        ### Text: "Please Type Your Name"
+        text_surface = font.render("Please Type Your Name: ", True, WHITE)
+        text_rect = text_surface.get_rect()
+        text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80) ### A bit higher than the centre of the screen
+        screen.blit(name_surface, name_rect)
+        
+        ### Update
         pygame.display.update()
 
     running = True
