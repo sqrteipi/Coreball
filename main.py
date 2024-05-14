@@ -76,34 +76,46 @@ def main():
         ### Update
         pygame.display.update()
 
+    ### Running the Game
     running = True
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE: ### Press Esc -> Quit
                     pygame.quit()
                     sys.exit()
 
+        ### Background
         screen.fill("black")
 
-        core_ang += core_speed
-        core_ang %= 360
-
+        ### Showing Score
         text = font.render(f"SCORE: {len(snipes)}", True, WHITE)
         screen.blit(text, (0, 0))
 
+        ### Core "turning"
+        core_ang += core_speed
+        core_ang %= 360
+
+        ### Check if Spacebar pressed -> Snipe one shot
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
             if not pressed:
-                pressed = True
+                pressed = True ### Avoid errors caused by long press
 
-                k = SCREEN_MIDDLE[1] + line_len + 300
+                ### Action for the snipe shoot towards the video
+                k = SCREEN_MIDDLE[1] + line_len + 300 # A bit lower than the core
                 while k > SCREEN_MIDDLE[1] + line_len:
-                    k -= 100
+                    k -= 100 # The snipe goes up
+                    
+                    ##### DRAWS EVERYTHING WHILE ACTION #####
 
+                    ### Background
                     screen.fill("black")
+
+                    ### Previous snipes
                     for i in range(len(snipes)):
                         angle = snipes[i]
                         x = sin(angle * pi / 180) * line_len
@@ -129,20 +141,25 @@ def main():
                                      width=5)
                     pygame.draw.circle(screen, WHITE, [SCREEN_MIDDLE[0], k],
                                        snipe_radii)
-
+                    
                     screen.blit(text, (0, 0))
 
+                    ### Update the screen
                     pygame.display.flip()
                     pygame.display.update()
 
                     clock.tick(60)
 
+                ### Add the snipe
                 snipes.append(0.0)
+
+                ### REVERSED -> Reverse the direction of core
                 if REVERSED:
                     core_speed = -core_speed
         else:
             pressed = False
 
+        ### Retry Button -> R
         if keys[pygame.K_r]:
             main()
 
