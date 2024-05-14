@@ -163,6 +163,7 @@ def main():
         if keys[pygame.K_r]:
             main()
 
+        ### Previous shots
         loc = []
         for i in range(len(snipes)):
             angle = snipes[i]
@@ -192,7 +193,8 @@ def main():
             screen, WHITE,
             [SCREEN_MIDDLE[0], SCREEN_MIDDLE[1] + 300 + (line_len - 180)],
             snipe_radii)
-
+        
+        ### SPEED_UP -> Increases the speed of core for a short period
         if SPEED_UP:
             if round % 100 == 1:
                 if core_speed >= 0:
@@ -205,41 +207,50 @@ def main():
                 else:
                     core_speed += 4.5
 
+        ### SPEED_ADD -> Increases the speed of core (Without decreasing) until it reaches a maximum speed of 10
         if SPEED_ADD:
             if core_speed >= 0 and core_speed < 10:
                 core_speed += 0.003
             elif core_speed <= 0 and core_speed < -10:
                 core_speed -= 0.003
 
+        ### RANDOM_REVERSE -> Randomly reverse the direction of core
         if RANDOM_REVERSE and random.randint(1, 250) == 1:
             core_speed = -core_speed
 
+        ### Update round info.
         round += 1
 
+        ### Update the screen
         pygame.display.flip()
         pygame.display.update()
         clock.tick(60)
 
+        ### Check whether two shots collides
         collides = False
         for i in range(len(loc)):
             for j in range(i + 1, len(loc)):
-                if dist(loc[i], loc[j]) <= 2 * snipe_radii:
+                if dist(loc[i], loc[j]) <= 2 * snipe_radii: ### (Mathematical) Method to check whether two circle collides
                     collides = True
 
+        ### Game Over
         if collides:
-            while True:
-                if not running:
-                    break
+            while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         running = False
+                
                 keys = pygame.key.get_pressed()
                 if keys[pygame.K_ESCAPE]:
                     pygame.quit()
                     sys.exit()
+                
+                ### Retry
                 if keys[pygame.K_r]:
                     main()
                     running = False
+
+    ### Quit After Game
     pygame.quit()
     sys.exit()
 
