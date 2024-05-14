@@ -16,3 +16,10 @@ class Data:
     def insert(self, data: tuple):
         query = "INSERT INTO scoreboard (username, score) VALUES (?, ?)"
         self.cursor.execute(query, data)
+        self.db.commit()
+
+    def fetch_data(self):
+        query = "SELECT (username, score) FROM scoreboard"
+        self.cursor.execute(query)
+        rows = self.cursor.fetchall()
+        return rows

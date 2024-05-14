@@ -1,3 +1,4 @@
+from data import Data
 import pygame  # type: ignore
 import random
 from math import sin, cos, pi, dist
@@ -17,11 +18,10 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
-    
-    
     ### Settings
     WHITE = (255, 255, 255)
     font = pygame.font.Font(None, 80)
+    db = Data("data.db")
 
     ### Parameters
     core_ang = 0.0
@@ -235,6 +235,7 @@ def main():
 
         ### Game Over
         if collides:
+            db.insert((username, len(snipes)))
             while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
