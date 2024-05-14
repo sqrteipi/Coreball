@@ -3,9 +3,12 @@ import random
 from math import sin, cos, pi, dist
 import sys
 
+pygame.init()
+display_info = pygame.display.Info()
+
 # pygame setup
-SCREEN_WIDTH = 1000
-SCREEN_HEIGHT = 1000
+SCREEN_WIDTH = display_info.current_w
+SCREEN_HEIGHT = display_info.current_h
 SCREEN_MIDDLE = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4]
 
 
@@ -13,13 +16,14 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
+
     running = True
 
     WHITE = (255, 255, 255)
     font = pygame.font.Font(None, 80)
 
     core_ang = 0.0
-    core_speed = 2.5
+    core_speed = 2
     core_radii = 50
     line_len = 300
     snipe_radii = 30
@@ -27,16 +31,49 @@ def main():
     pressed = False
 
     RANDOM_REVERSE = True
-    REVERSED = False
+    REVERSED = True
     SPEED_UP = True
-    SPEED_ADD = False
+    SPEED_ADD = True
 
     round = 0
+    username = ""
 
+    while running:
+        screen.fill("black")
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+                elif event.key == pygame.K_RETURN:
+                    running = False
+                elif event.key == pygame.K_BACKSPACE:
+                    username = username[:-1]
+                else:
+                    username += event.unicode
+
+        name_surface = font.render(username, True, WHITE)
+        text_surface = font.render("Please Type Your Name: ", True, WHITE)
+        name_rect = name_surface.get_rect()
+        text_rect = text_surface.get_rect()
+        name_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80)
+        screen.blit(name_surface, name_rect)
+        screen.blit(text_surface, text_rect)
+
+        pygame.display.update()
+
+    running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
         screen.fill("black")
 
@@ -146,10 +183,11 @@ def main():
             elif core_speed <= 0 and core_speed < -10:
                 core_speed -= 0.003
 
-        if RANDOM_REVERSE and random.randint(1, 100) == 1:
+        if RANDOM_REVERSE and random.randint(1, 250) == 1:
             core_speed = -core_speed
 
         round += 1
+
         pygame.display.flip()
         pygame.display.update()
         clock.tick(60)
@@ -168,6 +206,9 @@ def main():
                     if event.type == pygame.QUIT:
                         running = False
                 keys = pygame.key.get_pressed()
+                if keys[pygame.K_ESCAPE]:
+                    pygame.quit()
+                    sys.exit()
                 if keys[pygame.K_r]:
                     main()
                     running = False
