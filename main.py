@@ -65,13 +65,13 @@ def main():
         name_surface = font.render(username, True, WHITE)
         name_rect = name_surface.get_rect()
         name_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-        screen.blit(text_surface, text_rect)
+        screen.blit(name_surface, name_rect)
 
         ### Text: "Please Type Your Name"
         text_surface = font.render("Please Type Your Name: ", True, WHITE)
         text_rect = text_surface.get_rect()
         text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80) ### A bit higher than the centre of the screen
-        screen.blit(name_surface, name_rect)
+        screen.blit(text_surface, text_rect)
         
         ### Update
         pygame.display.update()
