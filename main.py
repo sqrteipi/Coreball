@@ -1,13 +1,19 @@
 from data import Data
 import pygame  # type: ignore
 import random
+import requests
 from math import sin, cos, pi, dist
 import sys
 
+# initialization
+class HTTPRequestError(Exception):
+    pass
+
+URL = "http://localhost:5000"
 pygame.init()
-display_info = pygame.display.Info()
 
 # pygame setup
+display_info = pygame.display.Info()
 SCREEN_WIDTH = display_info.current_w
 SCREEN_HEIGHT = display_info.current_h
 SCREEN_MIDDLE = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2]
@@ -236,6 +242,10 @@ def main():
         ### Game Over
         if collides:
             db.insert((username, len(snipes)))
+            data = db.fetch()
+            response = requests.post(url=URL, json=data)
+            if response.status_code != 200:
+                raise HTTPRequestError(f"Error code: {response.status_code}")
             while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
