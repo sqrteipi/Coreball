@@ -1,4 +1,5 @@
 import pygame  # type: ignore
+import random
 from math import sin, cos, pi, dist
 import sys
 
@@ -25,8 +26,9 @@ def main():
     snipes = []
     pressed = False
 
-    REVERSED = True
-    SPEED_UP = False
+    RANDOM_REVERSE = True
+    REVERSED = False
+    SPEED_UP = True
     SPEED_ADD = False
 
     round = 0
@@ -143,6 +145,9 @@ def main():
                 core_speed += 0.003
             elif core_speed <= 0 and core_speed < -10:
                 core_speed -= 0.003
+
+        if RANDOM_REVERSE and random.randint(1, 100) == 1:
+            core_speed = -core_speed
 
         round += 1
         pygame.display.flip()
