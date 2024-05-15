@@ -9,7 +9,7 @@ import sys
 class HTTPRequestError(Exception):
     pass
 
-URL = "http://localhost:5000"
+URL = "https://stmarks-ict.com/coreball"
 pygame.init()
 
 # pygame setup

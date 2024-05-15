@@ -1,2 +1,4 @@
 # ignoring database files
 *.db
+.idea
+__pycache__
