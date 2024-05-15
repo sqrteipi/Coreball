@@ -1,3 +1,4 @@
+import configparser
 from data import Data
 import pygame  # type: ignore
 import random
@@ -8,8 +9,8 @@ import sys
 # initialization
 class HTTPRequestError(Exception):
     pass
-
-URL = "https://stmarks-ict.com/coreball"
+config = configparser.ConfigParser()
+config.read("config.ini")
 pygame.init()
 
 # pygame setup
@@ -243,7 +244,7 @@ def main():
         if collides:
             db.insert((username, len(snipes)))
             data = db.fetch()
-            response = requests.post(url=URL, json=data)
+            response = requests.post(url=config.get("server", "url"), json=data)
             if response.status_code != 200:
                 raise HTTPRequestError(f"Error code: {response.status_code}")
             while running:
