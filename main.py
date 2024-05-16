@@ -1,4 +1,3 @@
-from data import Data
 import pygame  # type: ignore
 import random
 from math import sin, cos, pi, dist
@@ -21,8 +20,6 @@ def main():
     ### Settings
     WHITE = (255, 255, 255)
     font = pygame.font.Font(None, 80)
-    db = Data("data.db")
-
     ### Parameters
     core_ang = 0.0
     core_speed = 2
@@ -68,7 +65,7 @@ def main():
         screen.blit(name_surface, name_rect)
 
         ### Text: "Please Type Your Name"
-        text_surface = font.render("Please Type Your Name: ", True, WHITE)
+        text_surface = font.render("Please Type Your Index No. : ", True, WHITE)
         text_rect = text_surface.get_rect()
         text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 80) ### A bit higher than the centre of the screen
         screen.blit(text_surface, text_rect)
@@ -237,7 +234,6 @@ def main():
         if collides:
             with open("scoreboard.txt", "a") as file:
                 file.write(f"{username} {len(snipes)-1}\n")
-            db.insert((username, len(snipes)))
             while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
