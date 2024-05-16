@@ -235,6 +235,8 @@ def main():
 
         ### Game Over
         if collides:
+            with open("scoreboard.txt", "a") as file:
+                file.write(f"{username} {len(snipes)-1}\n")
             db.insert((username, len(snipes)))
             while running:
                 for event in pygame.event.get():
