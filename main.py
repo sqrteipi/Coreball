@@ -25,7 +25,7 @@ def main():
     core_speed = 2
     core_radii = 50
     line_len = 300
-    snipe_radii = 30
+    snipe_radii = 20
     snipes = []
     pressed = False
 
