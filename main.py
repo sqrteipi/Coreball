@@ -52,7 +52,16 @@ def main():
                     pygame.quit()
                     sys.exit()
                 elif event.key == pygame.K_RETURN: ### Press Return -> Finish typing
-                    running = False
+                    try:
+                        if 24000 <= int(username) <= 30000:
+                            running = False
+                        else:
+                            username = ""
+                    except:
+                        if len(username) == 3 and username[0].isalpha() and username[1].isalpha() and username[2].isalpha():
+                            running = False
+                        else:
+                            username = ""
                 elif event.key == pygame.K_BACKSPACE: ### Delete char
                     username = username[:-1]
                 else:
@@ -232,8 +241,52 @@ def main():
 
         ### Game Over
         if collides:
-            with open("scoreboard.txt", "a") as file:
-                file.write(f"{username} {len(snipes)-1}\n")
+            with open("scoreboard.txt") as file:
+                f1 = file.readlines()
+            arr = []
+            for var in f1:
+                var = var.split()
+                arr.append([int(var[1]), var[0]])
+            arr.append([len(snipes)-1, username])
+            arr2 = {}
+            for var in arr:
+                try:
+                    arr2[var[1]] = max(arr2[var[1]], var[0])
+                except:
+                    arr2[var[1]] = var[0]
+            arr = []
+            for var in arr2:
+                arr.append([arr2[var], var])
+            arr.sort(reverse=True)   
+            with open("scoreboard.txt", "w") as file:
+                for i in range(min(len(arr), 15)):
+                    file.write(f"{arr[i][1]} {arr[i][0]}\n")
+            if len(arr) > 15:
+                arr = arr[:15]
+            with open("leaderboard.htm", "w") as file2:
+                file2.write('''<html>
+<head>
+    <meta http-equiv="refresh" content="5">
+    <link rel="stylesheet" href="style.css">
+    <title>Registration Form</title>
+</head>
+<body>
+<div id="main">
+    <h1>Coreball Leaderboard</h1>
+    <table>
+        <tr>
+            <th><p class="tabletitle">Index No.</p></th>
+            <th><p class="tabletitle">Score</p></th>
+        </tr>''')
+                for var in arr:
+                    file2.write(f'''<tr>
+            <td align="center">{var[1]}</td>
+            <td align="center">{var[0]}</td>
+        </tr>''')
+                file2.write('''    </table>
+</div>
+</body>
+</html>''')
             while running:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
@@ -253,5 +306,5 @@ def main():
     pygame.quit()
     sys.exit()
 
-
+ 
 main()
